@@ -1,7 +1,7 @@
 Name: cockpit-starter-kit
 Version: %{VERSION}
 Release: 1%{?dist}
-Summary: Cockpit Starter Kit Example Module
+Summary: Cockpit Snapper Module
 License: LGPLv2+
 
 Source: cockpit-starter-kit-%{version}.tar.gz
@@ -13,10 +13,10 @@ Requires: cockpit-system
 %define debug_package %{nil}
 
 %description
-Cockpit Starter Kit Example Module
+Cockpit Snapper Module
 
 %prep
-%setup -n cockpit-starter-kit
+%setup -n cockpit-snapper
 
 %install
 %make_install

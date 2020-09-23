@@ -1,7 +1,7 @@
 {
-  "name": "starter-kit",
+  "name": "snapper",
   "version": "0.1.0",
-  "description": "Scaffolding for a cockpit module",
+  "description": "Snapper module",
   "main": "index.js",
   "repository": "git@github.com:cockpit/starter-kit.git",
   "author": "",
