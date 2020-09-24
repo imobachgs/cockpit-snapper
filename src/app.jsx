@@ -1,49 +1,46 @@
 /*
- * This file is part of Cockpit.
+ * Copyright (c) [2020] SUSE LLC
  *
- * Copyright (C) 2017 Red Hat, Inc.
+ * All Rights Reserved.
  *
- * Cockpit is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of version 2 of the GNU General Public License as published
+ * by the Free Software Foundation.
  *
- * Cockpit is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Cockpit; If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, contact SUSE LLC.
+ *
+ * To contact SUSE LLC about this file by physical or electronic mail, you may
+ * find current contact information at www.suse.com.
  */
 
-import cockpit from 'cockpit';
-import React from 'react';
-import { Alert, Card, CardTitle, CardBody } from '@patternfly/react-core';
+import React, { useState, useEffect } from 'react';
+import SnapshotsPage from './components/SnapshotsPage.jsx';
+import { Page } from '@patternfly/react-core';
+import snapper from './lib/snapper.js';
 
-const _ = cockpit.gettext;
-
-export class Application extends React.Component {
-    constructor() {
-        super();
-        this.state = { hostname: _("Unknown") };
-
-        cockpit.file('/etc/hostname').watch(content => {
-            this.setState({ hostname: content.trim() });
-        });
+const content = (configs) => {
+    if (configs) {
+        return <SnapshotsPage configs={configs} />;
+    } else {
+        return <div>Loading</div>;
     }
+};
 
-    render() {
-        return (
-            <Card>
-                <CardTitle>Starter Kit</CardTitle>
-                <CardBody>
-                    <Alert
-                        variant="info"
-                        title={ cockpit.format(_("Running on $0"), this.state.hostname) }
-                    />
-                </CardBody>
-            </Card>
-        );
-    }
-}
+export const Application = () => {
+    const [configs, setConfigs] = useState(null);
+
+    useEffect(() => {
+        // TODO: handle errors
+        snapper.listConfigs().then(setConfigs);
+    }, []);
+
+    return (
+        <Page>{content(configs)}</Page>
+    );
+};
