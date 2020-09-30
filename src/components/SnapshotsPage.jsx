@@ -39,7 +39,7 @@ const _ = cockpit.gettext;
 
 const SnapshotsPage = (props) => {
     const { configs } = props;
-    const initialConfig = (configs.length === 0) ? null : configs[0].config;
+    const initialConfig = (configs.length === 0) ? null : configs[0].name;
     const [selectedConfig, setConfig] = useState(initialConfig);
     const [snapshots, setSnapshots] = useState([]);
 

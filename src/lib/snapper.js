@@ -21,20 +21,21 @@
 
 import cockpit from 'cockpit';
 
+const buildConfig = (data) => {
+    const [name, subvolume] = data;
+    return { name, subvolume };
+};
+
 /**
  * Returns the list of available configurations
- *
- * TOOD: replace with the real implementation.
  *
  * @returns {Promise<Array|Error>} Resolves to an array of object in case of success
  */
 const listConfigs = () => {
     return new Promise((resolve, reject) => {
-        cockpit.spawn(["snapper", "--jsonout", "list-configs"], { superuser: true })
-                .then(result => {
-                    const parsed_result = JSON.parse(result);
-                    resolve(parsed_result.configs);
-                })
+        const client = cockpit.dbus("org.opensuse.Snapper");
+        client.call("/org/opensuse/Snapper", "org.opensuse.Snapper", "ListConfigs")
+                .then(result => resolve(result[0].map(buildConfig)))
                 .catch(reject);
     });
 };
@@ -74,12 +75,9 @@ const buildSnapshot = (data) => {
  */
 const listSnapshots = (config_name) => {
     return new Promise((resolve, reject) => {
-        cockpit.spawn(["snapper", "--jsonout", "list"], { superuser: true })
-                .then(result => {
-                    const parsed_result = JSON.parse(result);
-                    const snapshots = parsed_result[config_name].map(buildSnapshot);
-                    resolve(snapshots);
-                })
+        const client = cockpit.dbus("org.opensuse.Snapper");
+        client.call("/org/opensuse/Snapper", "org.opensuse.Snapper", "ListSnapshots", [config_name])
+                .then(result => resolve(result[0].map(buildSnapshot)))
                 .catch(reject);
     });
 };

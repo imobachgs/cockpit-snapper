@@ -27,10 +27,9 @@ class ConfigurationSelector extends React.Component {
         super(props);
 
         this.options = this.props.configs.map(c => (
-            { value: c.config, description: c.subvolume, disabled: false }
+            { value: c.name, description: c.subvolume, disabled: false }
         ));
 
-        console.log("Selected", props);
         const { onChange } = props;
 
         this.state = {
