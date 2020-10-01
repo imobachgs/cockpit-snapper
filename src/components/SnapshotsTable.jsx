@@ -26,7 +26,7 @@ const _ = cockpit.gettext;
 
 const SnapshotsTable = ({ snapshots }) => {
     const columns = [
-        _("Number"), _("Type"), _("Pre"), _("Date"), _("User"),
+        _("Number"), _("Type"), _("Pre"), _("Date/Time"), _("User"),
         _("Clean-up"), _("Description")
     ];
     const rows = snapshots.map(s =>
@@ -34,7 +34,7 @@ const SnapshotsTable = ({ snapshots }) => {
             s.number,
             s.type,
             s.pre_number,
-            s.date,
+            s.date ? s.date.toLocaleString() : "",
             s.user,
             s.cleanup,
             s.description,

@@ -60,6 +60,7 @@ const buildSnapshot = (data) => {
         cleanup,
         description,
         userdata,
+        date:        data.date ? new Date(data.date) : null,
         is_default:  data.default,
         pre_number:  data["pre-number"],
         used_space:  data["used-space"],
